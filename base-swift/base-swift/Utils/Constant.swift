@@ -8,6 +8,13 @@
 import UIKit
 
 struct Constant {
+    static let username = "hendrik@starpx.com"
+    static let password = "StarpxStarpx1!"
+    static let examplesite = "https://dev.starpx.com"
+    static let graphqlAPI = "https://api-dev.starpx.com/graphql"
+    static let graphqlKey = "da2-aqimnlymsnacpjvvpiizzxf3xq"
+    static let awsCognitoClientID = "AWS Cognito ClientID"
+    static let cognitoPoolID = "eu-central-1_OW0g61kEk"
     
     struct Values {
         static let currentTimeZone = "Asia/Ho_Chi_Minh"

@@ -101,6 +101,11 @@ public final class Scrypt {
     let block = [UInt8](bufferPointer)
     return try PKCS5.PBKDF2(password: Array(self.password), salt: block, iterations: 1, keyLength: self.dkLen, variant: .sha2(.sha256)).calculate()
   }
+
+  public func callAsFunction() throws -> Array<UInt8> {
+    try calculate()
+  }
+
 }
 
 private extension Scrypt {
@@ -116,7 +121,11 @@ private extension Scrypt {
 
     /* 1: X <-- B */
     let typedBlock = block.assumingMemoryBound(to: UInt32.self)
+#if compiler(>=5.8)
+    X.update(from: typedBlock, count: 32 * self.r)
+#else
     X.assign(from: typedBlock, count: 32 * self.r)
+#endif
 
     /* 2: for i = 0 to N - 1 do */
     for i in stride(from: 0, to: self.N, by: 2) {

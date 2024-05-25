@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DemoDashboardVC" customModule="base_swift" customModuleProvider="target">
             <connections>
+                <outlet property="btnGallery" destination="RN8-7I-8Hd" id="UYz-7T-cbv"/>
                 <outlet property="btnLogout" destination="ZK6-p4-jsd" id="Jrr-vo-zSZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -28,11 +29,21 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZK6-p4-jsd">
-                    <rect key="frame" x="120.66666666666667" y="464" width="151.66666666666663" height="35"/>
+                    <rect key="frame" x="120.66666666666667" y="743" width="151.66666666666663" height="35"/>
                     <color key="backgroundColor" name="AccentColor"/>
                     <color key="tintColor" name="Background"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Logout"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RN8-7I-8Hd" userLabel="Gallery">
+                    <rect key="frame" x="136.66666666666666" y="479" width="119.99999999999997" height="35"/>
+                    <color key="backgroundColor" name="AccentColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="jJE-Q4-Wo3"/>
+                    </constraints>
+                    <color key="tintColor" name="Background"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Gallery"/>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -40,7 +51,9 @@
             <constraints>
                 <constraint firstItem="ZK6-p4-jsd" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.38592" id="4aE-Iz-D7y"/>
                 <constraint firstItem="qBC-eA-EtY" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="80x-H3-9gM"/>
-                <constraint firstItem="ZK6-p4-jsd" firstAttribute="top" secondItem="qBC-eA-EtY" secondAttribute="bottom" constant="15" id="UCu-ea-qjJ"/>
+                <constraint firstItem="RN8-7I-8Hd" firstAttribute="centerX" secondItem="qBC-eA-EtY" secondAttribute="centerX" id="PB2-RU-G7t"/>
+                <constraint firstItem="RN8-7I-8Hd" firstAttribute="top" secondItem="qBC-eA-EtY" secondAttribute="bottom" constant="30" id="UFp-nM-CvF"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ZK6-p4-jsd" secondAttribute="bottom" constant="40" id="ZN5-zi-2Ha"/>
                 <constraint firstItem="qBC-eA-EtY" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="vww-OD-Y4y"/>
                 <constraint firstItem="ZK6-p4-jsd" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="zEx-pO-aPR"/>
             </constraints>

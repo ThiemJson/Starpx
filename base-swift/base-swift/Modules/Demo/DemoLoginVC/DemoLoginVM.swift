@@ -21,17 +21,35 @@ protocol DemoLoginVM : BaseViewModel {
 extension DemoLoginVM {
     func login(loginModel: BaseLoginModel) {
         self.rxLoading.accept(true)
-        BaseAuthService.login(loginModel: loginModel)
-            .onCompleted {
-                self.rxLoading.accept(false)
+        let user = loginModel.email
+        let pass = loginModel.password
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.rxLoading.accept(false)
+            if user == "hendrik@starpx.com" && pass == "StarpxStarpx1!" {
+                var authModel = BaseAuthModel()
+                authModel.id = Int.random(in: 100..<1000)
+                authModel.name = "hendrik@starpx.com"
+                authModel.email = "hendrik@starpx.com"
+                authModel.token = UUID().uuidString
+                self.rxAuthModel.accept(authModel)
+            } else {
+                let error = BaseResponse()
+                error.message = "Username or password incorrect !"
+                error.code = 401
+                self.rxError.accept(error)
             }
-            .onSuccess { (baseAuthModel) in
-                print("==> resoponse: \(baseAuthModel) ")
-                self.rxAuthModel.accept(baseAuthModel)
-            }
-            .onError { baseResponse in
-                self.rxError.accept(baseResponse)
-            }
+        }
+        //        BaseAuthService.login(loginModel: loginModel)
+        //            .onCompleted {
+        //                self.rxLoading.accept(false)
+        //            }
+        //            .onSuccess { (baseAuthModel) in
+        //                print("==> resoponse: \(baseAuthModel) ")
+        //                self.rxAuthModel.accept(baseAuthModel)
+        //            }
+        //            .onError { baseResponse in
+        //                self.rxError.accept(baseResponse)
+        //            }
     }
     
     func register(regisModel: BaseRegistrationModel) {

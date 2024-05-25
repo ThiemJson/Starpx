@@ -14,7 +14,9 @@ class DemoLoginVC: BaseViewModelController<DemoLoginVM> {
     @IBOutlet weak var tfUserName       : UITextField!
     @IBOutlet weak var tfPass           : UITextField!
     @IBOutlet weak var btnLogin         : UIButton!
-    @IBOutlet weak var btnRegister      : UIButton!
+    
+    private let defaultUser = "hendrik@starpx.com"
+    private let defaultPass = "StarpxStarpx1!"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,21 +29,9 @@ class DemoLoginVC: BaseViewModelController<DemoLoginVM> {
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
                 var loginModel      = BaseLoginModel()
-                loginModel.email    = self.tfUserName.text ?? "demo_user@tech.com"
-                loginModel.password = "\(self.tfPass.text ?? "password")"//.enCryptoData()
+                loginModel.email    = self.tfUserName.text ?? defaultUser
+                loginModel.password = "\(self.tfPass.text ?? defaultPass)"//.enCryptoData()
                 self.viewModel?.login(loginModel: loginModel)
-            })
-            .disposed(by: self.rxDisposeBag)
-        
-        self.btnRegister.rx
-            .tapWithNetwork()
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-                var regisModel      = BaseRegistrationModel()
-                regisModel.email    = self.tfUserName.text ?? "demo_user@tech.com"
-                regisModel.name     = self.tfUserName.text ?? "demo_user@tech.com"
-                regisModel.password = "\(self.tfPass.text ?? "password")"//.enCryptoData()
-                self.viewModel?.register(regisModel: regisModel)
             })
             .disposed(by: self.rxDisposeBag)
     }
@@ -77,7 +67,7 @@ class DemoLoginVC: BaseViewModelController<DemoLoginVM> {
                     let code    = response.code,
                     let msg     = response.message
                 else { return }
-                self.showSnackError(message: "Code: \(code) \(msg)")
+                self.showSnackError(message: "Error: \(code) \(msg)")
             })
             .disposed(by: self.rxDisposeBag)
     }

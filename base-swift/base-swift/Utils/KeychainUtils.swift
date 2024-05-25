@@ -7,25 +7,26 @@
 //
 
 import Foundation
-import KeychainAccess
+//import KeychainAccess
 
 public class KeychainUtils {
     public static func save(_ value : String, forKey key : String, inService service : String) {
-        let keychain = Keychain(service: service)
-        keychain[key] = value
+//        let keychain = Keychain(service: service)
+//        keychain[key] = value
     }
     
     public static func getValue(ForKey key : String, inService service : String) -> String? {
-        let keychain = Keychain(service: service)
-        return keychain[key]
+//        let keychain = Keychain(service: service)
+//        return keychain[key]
+        return ""
     }
     
     public static func removeKey(_ key : String, inService service : String) {
-        let keychain = Keychain(service: service)
-        do {
-            try keychain.remove(key)
-        } catch let error {
-            print("KeychainUtils error : \(error.localizedDescription)")
-        }
+//        let keychain = Keychain(service: service)
+//        do {
+//            try keychain.remove(key)
+//        } catch let error {
+//            print("KeychainUtils error : \(error.localizedDescription)")
+//        }
     }
 }
