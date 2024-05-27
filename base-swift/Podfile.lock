@@ -1,5 +1,20 @@
 PODS:
   - Alamofire (5.6.4)
+  - AWSAuthCore (2.36.2):
+    - AWSCore (= 2.36.2)
+  - AWSCognitoIdentityProvider (2.36.2):
+    - AWSCognitoIdentityProviderASF (= 2.36.2)
+    - AWSCore (= 2.36.2)
+  - AWSCognitoIdentityProviderASF (2.36.2):
+    - AWSCore (= 2.36.2)
+  - AWSCore (2.36.2)
+  - AWSMobileClient (2.36.2):
+    - AWSAuthCore (= 2.36.2)
+    - AWSCognitoIdentityProvider (= 2.36.2)
+    - AWSCognitoIdentityProviderASF (= 2.36.2)
+    - AWSCore (= 2.36.2)
+  - AWSPinpoint (2.36.2):
+    - AWSCore (= 2.36.2)
   - CryptoSwift (1.8.2)
   - Differentiator (5.0.0)
   - IQKeyboardManagerSwift (6.5.11)
@@ -36,6 +51,8 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (= 5.6.4)
+  - AWSMobileClient
+  - AWSPinpoint
   - CryptoSwift
   - IQKeyboardManagerSwift (= 6.5.11)
   - KeychainAccess (= 4.2.2)
@@ -55,6 +72,12 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AWSAuthCore
+    - AWSCognitoIdentityProvider
+    - AWSCognitoIdentityProviderASF
+    - AWSCore
+    - AWSMobileClient
+    - AWSPinpoint
     - CryptoSwift
     - Differentiator
     - IQKeyboardManagerSwift
@@ -75,6 +98,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
+  AWSAuthCore: 0cb5d14bba49eaac2c4f470c3363a0dc93cbd5f0
+  AWSCognitoIdentityProvider: 8c04f76b85b8c6e3463a36f01a2d3980404efc46
+  AWSCognitoIdentityProviderASF: 39f47443203aefdc90d7758bad98fbecf9afbe8d
+  AWSCore: 389e60725f6cd23873ffa6a6292c8f38a940fe11
+  AWSMobileClient: aad2c8dfeea9806e72000d2be187f2680073a400
+  AWSPinpoint: ebf366b9ec5d309c2f30d4d851ef67202e2cb407
   CryptoSwift: c63a805d8bb5e5538e88af4e44bb537776af11ea
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
@@ -93,6 +122,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: e7204f5a6637ae9cf159a7fc7e0d49c9e52f8a23
+PODFILE CHECKSUM: 31e527f57633e1a3114e3092f9431906e2c708d4
 
 COCOAPODS: 1.15.2
