@@ -9,9 +9,12 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import SVProgressHUD
 
 class GalleryVC: BaseViewModelController<GalleryVM> {
     @IBOutlet weak var clvimages: UICollectionView!
+    var isWatingLoadmore = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel?.fetchImage()
@@ -39,7 +42,8 @@ class GalleryVC: BaseViewModelController<GalleryVM> {
         viewModel.rxImages
             .onMain()
             .subscribe(onNext: { [weak self] images in
-                guard let `self` = self else { return }
+                guard let `self` = self, !images.isEmpty else { return }
+                self.isWatingLoadmore = false
                 self.clvimages.reloadData()
             })
             .disposed(by: rxDisposeBag)
@@ -47,17 +51,30 @@ class GalleryVC: BaseViewModelController<GalleryVM> {
 }
 
 extension GalleryVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        
+        /** `Kéo đến bottom và đang k loading gì cả` */
+        if (currentOffset >= maximumOffset) && (self.isWatingLoadmore == false) && (viewModel?.rxNextToken.value != nil) {
+            self.isWatingLoadmore   = true
+            viewModel?.fetchImage()
+        }
+    }
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100 //viewModel?.rxImages.value.count ?? 30
+        return viewModel?.rxImages.value.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GalleryIconCell", for: indexPath) as! GalleryIconCell
-        cell.image.setImage(withUrL: "https://picsum.photos/200")
+        if let image = viewModel?.rxImages.value[safe: indexPath.item] {
+            cell.image.setImage(withUrL: image.imageDetail.thumbs.small)
+        }
         return cell
     }
     
@@ -79,7 +96,9 @@ extension GalleryVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailImageVC = DetailImageVC()
-        detailImageVC.imageURL = "https://picsum.photos/200"
+        if let image = viewModel?.rxImages.value[safe: indexPath.item] {
+            detailImageVC.imageURL = image.imageDetail.fullURL
+        }
         push(vc: detailImageVC)
     }
 }
@@ -88,6 +107,6 @@ import SDWebImage
 extension UIImageView {
     public func setImage(withUrL url: String?) {
         guard let URL = URL(string: url ?? "") else { return }
-        sd_setImage(with: URL)
+        sd_setImage(with: URL, placeholderImage: UIImage(named: "images"))
     }
 }

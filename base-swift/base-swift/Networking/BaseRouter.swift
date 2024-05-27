@@ -17,34 +17,32 @@ enum BaseEndpoint : String {
     
     /** `User` */
     case user       = "/users"
+    
+    case images     = "graphql"
 }
 
 enum BaseRouter {
 #if Develop
-    static let domain  = "restapi.adequateshop.com"
-    static let baseURL = "http://\(domain)/api"
+    static let domain  = "api-dev.starpx.com"
+    static let baseURL = "https://\(domain)/graphql"
 #elseif Staging
-    static let domain  = "restapi.adequateshop.com"
-    static let baseURL = "http://\(domain)/api"
+    static let domain  = "api-dev.starpx.com"
+    static let baseURL = "https://\(domain)/graphql"
 #else
-    static let domain  = "restapi.adequateshop.com"
-    static let baseURL = "http://\(domain)/api"
+    static let domain  = "api-dev.starpx.com"
+    static let baseURL = "https://\(domain)"
 #endif
     
-    /** `Auth` */
-    case register(regisModel: BaseRegistrationModel)
-    case login(loginModel: BaseLoginModel)
+    /** `Images` */
+    case images(customerId: String, limit: Int, nextToken: String?)
 }
 
 extension BaseRouter: URLRequestConvertible {
     // MARK: - Request Info
     var request: (HTTPMethod, String) {
         switch self {
-            /** `Auth` */
-        case .register(regisModel: _):
-            return (.post, BaseEndpoint.register.rawValue)
-        case .login(loginModel: _):
-            return (.post, BaseEndpoint.login.rawValue)
+            case .images(customerId: _, limit: _, nextToken: _):
+                return (.post, BaseEndpoint.images.rawValue)
         }
     }
     
@@ -56,13 +54,17 @@ extension BaseRouter: URLRequestConvertible {
      */
     var params: [String: Any]? {
         switch self {
-            /** `Auth` */
-        case .register(regisModel: var regisModel):
-            return regisModel.toJSON()
-        case .login(loginModel: var loginModel):
-            return loginModel.toJSON()
-        default:
-            return [:]
+                /** `Auth` */
+            case .images(customerId: let customerId, limit: let limit, nextToken: let nextToken):
+                var params: [String: Any] = [:]
+                params["operationName"] = "getImageSetSummaries"
+                params["query"] = "query getImageSetSummaries($customerId: String!, $limit: Int, $nextToken: String) {  getImageSetSummaries(    customerId: $customerId    limit: $limit    nextToken: $nextToken  ) {    nextToken    image_sets {      caption      set_id      state      image_detail {        full_height        full_url        full_width        thumbs {          xlarge          large          small          medium          __typename        }        __typename      }      __typename    }    __typename  }}"
+                var variables: [String: Any] = ["customerId": customerId, "limit": limit]
+                if let nextToken = nextToken {
+                    variables.updateValue(nextToken, forKey: "nextToken")
+                }
+                params["variables"] = variables
+                return params
         }
     }
 }

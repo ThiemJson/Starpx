@@ -13,57 +13,30 @@ import RxCocoa
 protocol DemoLoginVM : BaseViewModel {
     var rxAuthModel: BehaviorRelay<BaseAuthModel?> { get }
     var rxError: BehaviorRelay<BaseResponse?> { get }
-    
     func login(loginModel: BaseLoginModel)
-    func register(regisModel: BaseRegistrationModel)
 }
 
 extension DemoLoginVM {
     func login(loginModel: BaseLoginModel) {
         self.rxLoading.accept(true)
-        let user = loginModel.email
-        let pass = loginModel.password
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        let user = loginModel.email ?? Constant.username
+        let pass = loginModel.password ?? Constant.password
+        
+        AWSManager.shared.login(username: user, password: pass) { response in
             self.rxLoading.accept(false)
-            if user == "hendrik@starpx.com" && pass == "StarpxStarpx1!" {
-                var authModel = BaseAuthModel()
-                authModel.id = Int.random(in: 100..<1000)
-                authModel.name = "hendrik@starpx.com"
-                authModel.email = "hendrik@starpx.com"
-                authModel.token = UUID().uuidString
-                self.rxAuthModel.accept(authModel)
-            } else {
-                let error = BaseResponse()
-                error.message = "Username or password incorrect !"
-                error.code = 401
-                self.rxError.accept(error)
+            switch response {
+                case .success(let session):
+                    var authModel = BaseAuthModel()
+                    authModel.name = session.idToken?.tokenString
+                    authModel.token = session.accessToken?.tokenString
+                    self.rxAuthModel.accept(authModel)
+                case .failure(let _error):
+                    let error = BaseResponse()
+                    error.message = _error.localizedDescription
+                    error.code = _error.asAFError?.responseCode
+                    self.rxError.accept(error)
             }
         }
-        //        BaseAuthService.login(loginModel: loginModel)
-        //            .onCompleted {
-        //                self.rxLoading.accept(false)
-        //            }
-        //            .onSuccess { (baseAuthModel) in
-        //                print("==> resoponse: \(baseAuthModel) ")
-        //                self.rxAuthModel.accept(baseAuthModel)
-        //            }
-        //            .onError { baseResponse in
-        //                self.rxError.accept(baseResponse)
-        //            }
-    }
-    
-    func register(regisModel: BaseRegistrationModel) {
-        self.rxLoading.accept(true)
-        BaseAuthService.register(regisModel: regisModel)
-            .onCompleted {
-                self.rxLoading.accept(false)
-            }
-            .onSuccess { (baseAuthModel) in
-                self.rxAuthModel.accept(baseAuthModel)
-            }
-            .onError { baseResponse in
-                self.rxError.accept(baseResponse)
-            }
     }
 }
 

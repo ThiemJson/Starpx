@@ -9,5 +9,7 @@
 import Foundation
 
 public class ImageService {
-   
+    static func getImageSetSummaries(customerId: String, limit: Int, nextToken: String?) -> BaseResult<GetImageSetResponse> {
+        return BaseRouter.images(customerId: customerId, limit: limit, nextToken: nextToken).object()
+    }
 }

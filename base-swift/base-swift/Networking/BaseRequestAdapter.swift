@@ -13,6 +13,7 @@ class BaseRequestInterceptor: RequestInterceptor {
         var headers = HTTPHeaders()
         if let accessToken = UserDefaultUtils.shared.getAccessToken() {
             headers["Authorization"] = "Bearer " + accessToken
+            headers["Content-Type"] = "application/graphql"
         }
         return headers
     }

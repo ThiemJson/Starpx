@@ -63,11 +63,9 @@ class DemoLoginVC: BaseViewModelController<DemoLoginVM> {
             .compactMap { $0 }
             .drive(onNext: { [weak self] (response) in
                 guard
-                    let `self`  = self,
-                    let code    = response.code,
-                    let msg     = response.message
+                    let `self`  = self
                 else { return }
-                self.showSnackError(message: "Error: \(code) \(msg)")
+                self.showSnackError(message: "Error: \(response.code ?? 404) \(response.message ?? "Username or password incorrect")")
             })
             .disposed(by: self.rxDisposeBag)
     }
